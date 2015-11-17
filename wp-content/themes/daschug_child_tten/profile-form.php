@@ -88,7 +88,7 @@ Theme My Login will always look in your theme's directory first, before using th
 		?>
 		<tr id="password">
 			<th><label for="upass1"><?php _e( 'New Password' ); ?></label></th>
-			<td><input type="password" name="pass1" id="upass1" size="16" value="" autocomplete="off" /> 
+			<td><input type="password" name="pass1" id="pass1" size="16" value="" autocomplete="off" /> 
 			<p class="description indicator-hint" style="float:right; width:265px;"><?php _e( 'If you would like to change the password type a new one. Otherwise leave this blank.', 'daschug-child-tten'); ?></p><br /><br />
 			<input style="margin-bottom: 10px;" type="password" name="pass2" id="upass2" size="16" value="" autocomplete="off" /> <span class="description" style="float:right; width:265px;"><?php _e( 'Type your new password again.', 'daschug-child-tten'); ?></span><br />
 			
