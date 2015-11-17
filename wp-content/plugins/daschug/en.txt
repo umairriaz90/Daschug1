@@ -144,3 +144,6 @@ MAIL_CONTENT_SIGNOUT = You signed out for the following event:;
 
 MAIL_CONTENT_HEADER_SIGNIN = Your daschug event signin;
 MAIL_CONTENT_HEADER_SIGNOUT = Your daschug signout;
+
+TOPIC_ACTIVE_STATUS = Already done
+TOPIC_ACTIVE_STATUS = Due Courses
