@@ -1,0 +1,146 @@
+EVENT_TYPE = Event Type;
+EVENT_TITLE_LONG = Title (long);
+EVENT_TITLE_SHORT = Title (short);
+PLUGIN_MENU_TITLE = Daschug Training Management;
+
+PLUGIN_ADD_EVENT = Add Event;
+PLUGIN_EDIT_EVENTS = Edit Events;
+PLUGIN_ADD_MANDANT = Add Mandant;
+PLUGIN_EDIT_MANDANTS = Edit Mandants;
+PLUGIN_SHOW_PROGRESS = Show Progress;
+PLUGIN_ERASE_PROGRESS = Erase Progresses;
+PLUGIN_SHOW_COURSES_TOPIC = Courses -> Topic;
+PLUGIN_ADD_TOPIC = Add Topic;
+PLUGIN_EDIT_TOPICS = Edit Topics;
+PLUGIN_ADD_LOCATION = Add Location;
+PLUGIN_EDIT_LOCATIONS = Edit Locations;
+
+EVENT_DATE_TIME = Date and Time; 
+EVENT_DURATION = Event duration (minutes);
+EVENT_INVITATION_TEXT = Invitation Text;
+EVENT_LECTURER = Lecturer;
+EVENT_BOOKED_PARTICIPANTS = Booked Participants;
+EVENT_CAPACITY = Capacity; 
+EVENT_TOPIC = Topic;
+EVENT_MANDANT = Mandant;
+EVENT_ADDRESS = Address;
+EVENT_VISIBILITY = Visibility;
+
+EVENT_TYPE_OFFLINE = Offline;
+EVENT_TYPE_ONLINE = Webinar;
+EVENT_TYPE_ELEARNING = E-Learning;
+
+USER_GENDER = Gender;
+USER_TITLE = Title;
+USER_MANDANT = Mandant;
+USER_DEPARTMENT = Department;
+USER_LOCATIONS = Locations;
+USER_PROFILE_EXTRA_FIELDS = Extra profile information;
+USER_PROFILE_YOUR_ASSIGNMENTS = Your Assignments;
+ASSIGNMENTS_TITLE = Title;
+USER_PARAMS_REPETITION_FREQUENCY_DAYS = Repetition Frequency (days);
+USER_PARAMS_EXPIRY_DATE = Expiry Date;
+USER_PARAMS_CURRENT_DEADLINE = Current Deadline;
+USER_PARAMS_REMIND_FREQUENCY_DAYS = Remind Frequency (days);
+
+EVENT_DELETE_WARNING = Do you want to delete this event?;
+EVENT_DELETED_MESSAGE = Event deleted;
+EVENT_NOT_DELETED_MESSAGE = There are still user booked on this event – cancel their bookings first!;
+EVENT_ADDED_MESSAGE = Event successfully added;
+
+MANDANT_ID_INCORRECT_MESSAGE = Mandant ID is incorrect;
+MANDANT_DELETED_MESSAGE = Mandant deleted;
+MANDANT_NOT_DELETED_MESSAGE = There are still users with this mandant;
+MANDANT_ADDED_MESSAGE = Mandant successfully added;
+MANDANT_DELETE_WARNING = Do you want to delete this mandant?;
+
+TOPIC_UPDATED_MESSAGE = Topic updated;
+TOPIC_ADDED_MESSAGE = Topic added;
+TOPIC_NOT_ADDED_MESSAGE = There has been a mistake;
+TOPIC_DELETE_WARNING = Do you want to delete this topic?;
+
+HEADER = Mediarise Events;
+EVENT_LIST_ACTION = Action;
+
+HEADER_PROGRESS = User Progress for individual Courses;
+HEADER_USERS_PER_MANDANT = Users per Mandant;
+HEADER_TOPICS_PER_COURSE = Courses and their Topics; 
+
+ACTION_SIGN_IN = Sign In;
+ACTION_EVENT_FULL = Event is full;
+ACTION_SIGN_OUT = Sign Out;
+ACTION_NOT_ALLOWED_IN = Not allowed in;
+
+EDIT_MANDANT = Edit;
+MANDANT_ID = Mandant ID;
+MANDANT_COMPANY = Company;
+MANDANT_LOCATIONS = Locations;
+DELETE_MANDANT = Delete Mandant;
+
+LOCATION_ID = Location ID;
+LOCATION_NAME = Location Name;
+EDIT_LOCATION = Edit Location;
+DELETE_LOCATION = Delete Location;
+LOCATION_DELETE_WARNING = Do you want to delete this location?;
+
+EDIT_TOPIC = Edit;
+APPLY_FILTERS = Apply Filters;
+EVENT_ID = Event ID;
+DELETE_TOPIC = Delete Topic;
+
+EDIT_EVENT = Edit;
+EVENT_PARTICIPANTS = Participants;
+DELETE_EVENT = Delete event;
+UPDATE_EVENT = Update Event;
+ADD_EVENT = Add Event;
+
+EVENT_ACTION_PROMT = What do you want to do;
+LOAD_TEMPLATE_VALUES = Load template values;
+
+STATUS_SIGNED_IN_TITLE = Signed In;
+STATUS_COMPLETED_TITLE = Completed;
+STATUS_SIGNED_OUT_TITLE = Signed Out;
+STATUS_MISSED_TITLE = Missed;
+
+BUTTON_SUBMIT = Submit;
+
+GENDER_MALE = male;
+GENDER_FEMALE = female;
+
+CHOOSE_EXISTING_ADDRESS = Choose existing address;
+ENTER_NEW_ADDRESS = or enter new address;
+ENTER_NEW_LOCATION = or enter new location;
+
+ADDRESS_OFFLINE = Address (offline);
+MEETING_ROOM = Meeting Room (offline);
+LOCATION = Location;
+INSTRUCTION_LINK = Instructions Link (online);
+CONTENT_LINK = Content Link;
+
+JANUARY = January;
+FEBRUARY = February;
+MARCH = March;
+APRIL = April;
+MAY = May;
+JUNE = June;
+JULY = July;
+AUGUST = August;
+SEPTEMBER = September;
+OCTOBER = October;
+NOVEMBER = November;
+DECEMBER = December;
+
+DATE = Date;
+TIME = Time;
+
+NEW_VALUE = New;
+BACK = Back;
+
+PARTICIPANTS = Participants;
+
+
+MAIL_CONTENT_SIGNIN = You signed in for the following event:;
+MAIL_CONTENT_SIGNOUT = You signed out for the following event:;
+
+MAIL_CONTENT_HEADER_SIGNIN = Your daschug event signin;
+MAIL_CONTENT_HEADER_SIGNOUT = Your daschug signout;

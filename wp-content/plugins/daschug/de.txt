@@ -1,0 +1,188 @@
+EVENT_TYPE = Typ;
+EVENT_TITLE_LONG = Schulungsthema;
+EVENT_TITLE_SHORT = Shortcode;
+PLUGIN_MENU_TITLE = DaTrain;
+
+PLUGIN_ADD_EVENT = Neue Schulung;
+PLUGIN_EDIT_EVENTS = Edit Schulungen;
+PLUGIN_ADD_MANDANT = Neuer Mandant;
+PLUGIN_EDIT_MANDANTS = Edit Mandanten;
+PLUGIN_SHOW_PROGRESS = Zeige Fortschritte;
+PLUGIN_ERASE_PROGRESS = Ergebnisse löschen;
+PLUGIN_SHOW_COURSES_TOPIC = Courses -> Topic;
+PLUGIN_ADD_TOPIC = Neues Thema;
+PLUGIN_EDIT_TOPICS = Edit Themen;
+
+EVENT_DATE_TIME = Datum/ Zeit; 
+EVENT_DURATION = Dauer (min);
+EVENT_INVITATION_TEXT = Einladungstext;
+EVENT_LECTURER = Referent;
+EVENT_BOOKED_PARTICIPANTS = Gebucht;
+EVENT_CAPACITY = Max. Anzahl; 
+EVENT_FREE_SEATS = Freie Plätze;
+EVENT_TOPIC = Thema;
+EVENT_MANDANT = Mandant;
+EVENT_ADDRESS = Adresse;
+EVENT_VISIBILITY = Sichtbarkeit;
+
+EVENT_TYPE_OFFLINE = Präsenz;
+EVENT_TYPE_ONLINE = Webinar;
+EVENT_TYPE_ELEARNING = eLearning;
+
+USER_GENDER = Anrede;
+USER_TITLE = Titel;
+USER_MANDANT = Mandant;
+USER_DEPARTMENT = Abteilung/Bereich;
+USER_LOCATIONS = Standorte;
+USER_PROFILE_EXTRA_FIELDS = Zusatz-Profilinformationen;
+USER_PROFILE_YOUR_ASSIGNMENTS = Ihre Kurszuordnungen;
+ASSIGNMENTS_TITLE = Titel;
+USER_PARAMS_REPETITION_FREQUENCY_DAYS = Wiederholfrequenz (Tage);
+USER_PARAMS_EXPIRY_DATE = Nächste Wiederholung;
+USER_PARAMS_CURRENT_DEADLINE = Derzeitige Deadline;
+USER_PARAMS_REMIND_FREQUENCY_DAYS = Remind Frequency (Tage);
+
+EVENT_DELETED_MESSAGE = Schulung wurde gelöscht;
+EVENT_NOT_DELETED_MESSAGE = Es gibt noch gebuchte Teilnehmer in dieser Schulung - storniere deren Buchung vor dem Löschen!;
+EVENT_ADDED_MESSAGE = Schulung wurde erfolgreich hinzugefügt;
+
+MANDANT_ID_INCORRECT_MESSAGE = Mandanten-ID ist nicht korrekt;
+MANDANT_DELETED_MESSAGE = Mandant wurde gelöscht;
+MANDANT_NOT_DELETED_MESSAGE = Es gibt noch Nutzer mit dieser Mandanten-ID - lösche zuerst die Nutzer!;
+MANDANT_ADDED_MESSAGE = Mandant erfolgreich hinzugefügt.;
+
+TOPIC_UPDATED_MESSAGE = Thema erfolgreich aktualisiert;
+TOPIC_ADDED_MESSAGE = Thema erfolgreich hinzugefügt;
+TOPIC_NOT_ADDED_MESSAGE = FEHLERMERLDUNG!;
+
+HEADER = Übersicht - Ihre Schulungen;
+EVENT_LIST_ACTION = Aktion;
+
+HEADER_PROGRESS = User-Fortschritte bei einzelnen Kursen; 
+HEADER_USERS_PER_MANDANT = User pro Mandant;
+HEADER_TOPICS_PER_COURSE = Courses und ihre Topics; 
+
+ACTION_SIGN_IN = anmelden;
+ACTION_EVENT_FULL = Schulung ausgebucht!;
+ACTION_SIGN_OUT = abmelden;
+ACTION_NOT_ALLOWED_IN = nicht möglich;
+
+EDIT_MANDANT = Edit;
+MANDANT_ID = Mandant-ID;
+MANDANT_COMPANY = Firma;
+DELETE_MANDANT = Lösche Mandant;
+
+EDIT_TOPIC = Edit;
+APPLY_FILTERS = Filter anwenden;
+EVENT_ID = Event-ID;
+
+EDIT_EVENT = Edit;
+EVENT_PARTICIPANTS = Teilnehmer;
+DELETE_EVENT = Schulung löschen;
+UPDATE_EVENT = Aktualisiere;
+ADD_EVENT = Schulung hinzufügen;
+
+EVENT_ACTION_PROMT = Was möchten Sie tun?;
+LOAD_TEMPLATE_VALUES = Standard-Werte / Textvorschläge laden;
+
+STATUS_SIGNED_IN_TITLE = Angemeldet;
+STATUS_COMPLETED_TITLE = Abgeschlossen;
+STATUS_SIGNED_OUT_TITLE = Abgemeldet;
+STATUS_MISSED_TITLE = Abwesend;
+
+BUTTON_SUBMIT = Speichern;
+
+GENDER_MALE = Herr;
+GENDER_FEMALE = Frau;
+
+CHOOSE_EXISTING_ADDRESS = Wähle existierende Adresse;
+ENTER_NEW_ADDRESS = oder gebe neue Adresse ein;
+ENTER_NEW_LOCATION = oder gebe neue Location ein;
+
+ADDRESS_OFFLINE = Adresse (Präsenzschulung);
+MEETING_ROOM = Meeting-Raum (Präsenzschulung);
+LOCATION = Location;
+INSTRUCTION_LINK = Link zu weiteren Anweisungen ;
+CONTENT_LINK = Inhalte-Link;
+
+JANUARY = Januar;
+FEBRUARY = Februar;
+MARCH = März;
+APRIL = April;
+MAY = Mai;
+JUNE = Juni;
+JULY = Juli;
+AUGUST = August;
+SEPTEMBER = September;
+OCTOBER = Oktober;
+NOVEMBER = November;
+DECEMBER = Dezember;
+
+DATE = Datum;
+TIME = Zeit;
+
+NEW_VALUE = Neu;
+BACK = Zurück;
+
+PLUGIN_ADD_LOCATION = Add Location;
+PLUGIN_EDIT_LOCATIONS = Edit Locations;
+
+EVENT_DELETE_WARNING = Do you want to delete this event?;
+MANDANT_DELETE_WARNING = Do you want to delete this mandant?;
+TOPIC_DELETE_WARNING = Do you want to delete this topic?;
+LOCATION_DELETE_WARNING = Do you want to delete this location?;
+
+MAIL_SIGN_IN_SUBJECT = Ihre Seminar-Event Anmeldung;
+MAIL_SIGN_IN_MESSAGE = Sie haben sich für folgendes Event angemeldet:;
+MAIL_SIGN_OUT_SUBJECT = Ihre Seminar-Event Abmeldung;
+MAIL_SIGN_OUT_MESSAGE = Sie haben sich aus folgendem Event abgemeldet:;
+
+MAIL_CONTACT_INFO = <br /><br /><b>Sollten Sie Fragen zur Nutzung haben, so wenden Sie sich bitte an:</b><br />
+            <a href="mailto:info@daschug.de">info@daschug.de</a><br />
+            Tel 06151-667344-0<br />
+            <br />
+            Ihr Kurs-Administrator<br />
+            <img height="28" src="http://datenschutz-elearning.com/wp-content/uploads/2013/05/daschug-logo-text-schwarz2-41x7.jpg" width="164" /><br />
+            daschug<br />
+            Datenschutz-<br />
+            und Mittelstandsberatung<br />
+            <br />
+            c/o MEDIARISE GmbH<br />
+            Robert-Bosch-Strasse 7<br />
+            D-64293 Darmstadt<br />
+            <br />
+            Tel: + 49 6151 66734-40<br />
+            Fax: + 49 6151 66734-43<br />
+            <a href="mailto:Ralf.Becker@daschug.de">Ralf.Becker@daschug.de</a><br />
+            <a href="http://www.datensicherheit-mittelstand.de">http://www.datensicherheit-mittelstand.de</a>
+</p>
+
+<p>
+            -<br />
+            daschug ist eine Marke der MEDIARISE GmbH •<br />
+            Sitz der MEDIARISE GmbH: Im Langen Wingert 26, D-68647 Biblis •<br />
+            Registergericht: Darmstadt HRB 87613 •<br />
+            Geschäftsführer: Ralf Becker •<br />
+            UST-ID DE263280903
+</p>
+
+<p>
+            <span style="font-size:7px;">Diese E-Mail ist vertraulich und ausschließlich für den/die genannten Empfänger bestimmt. Sie kann vertrauliche Informationen enthalten, die nach den maßgeblichen gesetzlichen Vorschriften nicht weitergegeben oder von Dritten gelesen werden dürfen. Sollten Sie diese E-Mail aus Versehen erhalten haben, ohne dass Sie als berechtigter Empfänger aufgeführt sind, bitten wir Sie höflich, sofort den Absender zu informieren und diese E-Mail sowie sämtliche Anhänge von Ihrem System zu entfernen. Das unerlaubte Kopieren sowie die unbefugte Weitergabe dieser E-Mail sind nicht gestattet und können eine Haftungsverpflichtung auslösen. This E-Mail message is confidential and intended only for the recipient(s) mentioned above. It may contain information that is privileged (attorney-client-privileged) or exempt from disclosure to any third party under applicable law. If you have received this message in error and/ or are not the named recipient, you are kindly requested to notify the sender immediately and to delete this e-mail and any attachment from your system. Any unauthorized copying, disclosure or distribution of the material in this e-mail is strictly forbidden and may cause liability.</span>
+</p>;
+
+INSTRUCTION_LINK_TITLE = <b>HIER KLICKEN</b>;
+CONTENT_LINK_TITLE = <b>Klicken Sie hier zur eLearning Kurs-Übersicht</b>;
+
+EVENT_NOT_ADDED_MESSAGE = Something is wrong;
+
+LANGUAGE = Sprache;
+
+MAIL_CONTENT_SIGNIN = Sehr geehrter Seminar Teilnehmer<br /><br />Sie haben sich für folgendes Seminar angemeldet:<br /><br />;
+MAIL_CONTENT_SIGNOUT = Sehr geehrter Seminar Teilnehmer<br /><br />Sie haben sich soeben aus folgendem Seminar abgemeldet:<br /><br />;
+
+MAIL_CONTENT_HEADER_SIGNIN = Ihre Anmeldung für das daschug Seminar;
+MAIL_CONTENT_HEADER_SIGNOUT = Ihre Abmeldung aus dem daschug Seminar;
+
+KURS_SEITE_1 = <b><h2><font color="#666666">Übersicht meiner Kurse</font></b></h2><br />;
+KURS_SEITE_2 = <b><h2><font color="#666666">Detail-Angaben zum Kurs</font></b></h2><br />;
+

@@ -1,0 +1,316 @@
+/* 
+    Document   : style
+    Created on : Sep 8, 2013, 8:35:43 PM
+    Author     : oxana
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* Daschug Events Plugin */
+
+
+
+
+/**** DETAILSEITE MEINE KURSE 1 ****/
+/* Tabelle Meine Kurse. Erste Übersichts-Seite */
+
+#events_list  {
+    border-collapse:collapse;
+    padding: 0px;
+    border: 1px;
+	background-color: #f6f4f4;
+	width: 100%;
+	border-style:ridge;
+	
+}
+
+#events_list th, #events_list td {
+    text-align: left;
+    border: 0px;
+    padding: 25px;
+	font:#4a4848; font-size:12px;
+	color:#000000;
+}
+
+/* Inhalt der Zeilen Tabelle Meine Kurse. Erste Übersichts-Seite */
+
+#events_list td {
+    text-align: left;
+    border: 0px;
+    padding: 25px;
+	/* font:#000000; */ 
+	font-size:12px;
+	color:#000000;
+}
+
+#events_list th {
+    border-bottom: 1px dotted darkgray;
+	background-color: #e7e3e3;
+}
+
+/* Tabellenüberschriften von "Meine Kurse" */
+
+#events_list.my_classes th {
+    /* padding: 9px 36px 9px 12px; */
+    /* GW 150118 */
+    padding: 9px 9px 9px 9px;
+}
+
+/* Erste Spalte schmaler */
+
+#events_list.my_classes th.thinner {
+	/* GW 150118 */
+	/* padding-right: 16px; */
+}
+
+/* Andere Spalten auch ändern */
+#events_list.my_classes th.title_long {
+	/* GW 150118 */
+	/* padding-right: 84px; */
+	width: 200px;
+}
+
+/* Andere Spalten auch ändern */
+#events_list.my_classes th.duration_min {
+	padding-right: 0px; padding-left: 0px;
+}
+
+#events_out th {
+	color: red;
+}
+
+
+/**** DETAILSEITE MEINE KURSE 2 ****/
+
+/* Detailseite 2 Anzeige der Teilnahme linke spalte */
+
+#event_info th {
+	background-color:#e7e3e3;
+	color:#000000;
+	
+}
+
+#event_output tr {
+	background-color:#e7e3e3;
+	color:red;
+	
+}
+
+/* Detail Anzeige der Teilnahme rechte spalte Detailseite 2 */
+
+#event_info td {
+	
+	background-color:#f6f4f4;
+	color:#404040;
+	border-style:ridge;
+	/* table-layout: fixed; */
+	width: 100%;
+}
+
+#content {
+	margin: 0;
+	width: 600px;
+}
+
+
+/**** BUTTONS ****/
+
+/* SignIn */
+
+a.sign_in_link_old1 {
+    color:#ffffff;
+	display:block;
+    width:54px;
+	padding:6px 16px 6px 4px;
+	/* margin:2px; */
+	background-color:#45b822;
+	border-width:thin;
+	/* border:1px dotted #2af480; */
+	
+	border-left:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	border-right:1px solid #2af480;
+	border-bottom:1px solid #2af480;
+	
+	text-align:center;
+	font-weight:bolder;
+	font-size:14px;
+	font-variant:small-caps;
+	font-family:arial;
+	text-decoration: none;
+}
+
+/* GW */
+a.sign_in_link {
+	background-color:#45b822;
+	display: inline-block;
+	padding:6px 12px 6px 8px;
+	width:54px;
+	padding:6px;
+	color: #fff;
+	text-decoration: none;
+	font-weight: bold;
+	font-variant:small-caps;
+	font-family:arial;
+	line-height: 1;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0 1px 3px #666;
+	-webkit-box-shadow: 0 1px 3px #666;
+	text-shadow: 0 -1px 1px #222;
+	border: none;
+	position: relative;
+	cursor: pointer; 
+	box-shadow: 2px 2px 2px #666666 !important;
+
+	background-image: -moz-linear-gradient(center top , #7fbf4d, #63a62f);		
+    border-color: #63a62f #63a62f #5b992b;
+    box-shadow: 0 1px 0 0 #96ca6d inset;
+    /* definierterer schatten */
+    box-shadow: 1px 1px 1px #000000 !important;
+
+}
+/* / GW */
+
+a.sign_in_link_old1:hover {
+	border-left:1px solid #7bdb5d;
+	border-top:1px solid #7bdb5d;
+	border-right:1px solid #27b33b;
+	border-bottom:1px solid #27b33b;
+	background-color:#52d729;
+}
+
+/* GW */
+a.sign_in_link:hover {
+	background-color: #76b347;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #76b347),
+		color-stop(100%, #5e9e2e) );
+	background-image: -webkit-linear-gradient(top, #76b347, #5e9e2e);
+	background-image: -moz-linear-gradient(top, #76b347, #5e9e2e);
+	background-image: -ms-linear-gradient(top, #76b347, #5e9e2e);
+	background-image: -o-linear-gradient(top, #76b347, #5e9e2e);
+	background-image: linear-gradient(top, #76b347, #5e9e2e);
+	-webkit-box-shadow: inset 0 1px 0 0 #8dbf67;
+	-moz-box-shadow: inset 0 1px 0 0 #8dbf67;
+	box-shadow: inset 0 1px 0 0 #8dbf67;
+	border-style: none;
+}
+
+
+/* / GW */
+
+
+/* SignOut */
+
+a.sign_out_link_old1 {
+    color: #ffffff;
+	display:block;
+    width:54px;
+	padding:6px 16px 6px 4px;
+	background-color:#fd1127;
+	border-width:thin;
+	
+	border-left:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	border-right:1px solid #be1c2b;
+	border-bottom:1px solid #be1c2b;
+	
+	text-align:center;
+	font-weight:bold;
+	font-size:14px;
+	font-variant:small-caps;
+	font-family:arial;
+	text-decoration: none;
+}
+
+/* GW */
+a.sign_out_link_old2 {
+	background-color:#fd1127;
+	display: inline-block;
+	padding:6px 12px 6px 8px;
+	width:54px;
+	padding:6px;
+	color: #fff;
+	text-decoration: none;
+	font-weight: bold;
+	font-variant:small-caps;
+	font-family:arial;
+	line-height: 1;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0 1px 3px #be1c2b;
+	-webkit-box-shadow: 0 1px 3px #be1c2b;
+	text-shadow: 0 -1px 1px #222;
+	border: none;
+	position: relative;
+	cursor: pointer; 
+	box-shadow: 2px 2px 2px #222 !important;
+}
+
+a.sign_out_link {
+	background-color:#fd1127;
+	display: inline-block;
+	padding:6px 12px 6px 8px;
+	width:54px;
+	padding:6px;
+	color: #fff;
+	text-decoration: none;
+	font-weight: bold;
+	font-variant:small-caps;
+	font-family:arial;
+	line-height: 1;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0 1px 3px #666;
+	-webkit-box-shadow: 0 1px 3px #666;
+	text-shadow: 0 -1px 1px #676767;
+	border: none;
+	position: relative;
+	cursor: pointer; 
+	box-shadow: 2px 2px 2px #666666 !important;
+
+	background-image: -moz-linear-gradient(center top , #fd1127, #D60819);		
+    border-color: #63a62f #63a62f #5b992b;
+    box-shadow: 0 1px 0 0 #96ca6d inset;
+    /* definierterer schatten */
+    box-shadow: 1px 1px 1px #000000 !important;
+
+}
+/* / GW */
+
+a.sign_out_link_old1:hover {
+	border-left:1px solid #efaca7;
+	border-top:1px solid #efaca7;
+	border-right:1px solid #848484;
+	border-bottom:1px solid #848484;
+	background-color:#da0a0a;
+}
+
+/* GW */
+a.sign_out_link:hover {
+	
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, ##ED1022),
+		color-stop(100%, ##C90814) );
+	background-image: -webkit-linear-gradient(top, ##ED1022, ##C90814);
+	background-image: -moz-linear-gradient(top, ##ED1022, ##C90814);
+	background-image: -moz-linear-gradient(center top , #ED1022, #C90814);
+	background-image: -ms-linear-gradient(top, ##ED1022, ##C90814);
+	background-image: -o-linear-gradient(top, ##ED1022, ##C90814);
+	background-image: linear-gradient(top, ##ED1022, ##C90814);
+	-webkit-box-shadow: inset 0 1px 0 0 #ED1022;
+	-moz-box-shadow: inset 0 1px 0 0 #ED1022;
+	box-shadow: inset 0 1px 0 0 #ED1022;
+	border-style: none;
+}
+
+/* GW */
+a.sign_in_link:active,
+a.sign_out_link:active {
+	position: relative;
+	top: 2px;
+}
+/* / GW */
+
+
+
+

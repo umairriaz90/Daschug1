@@ -1,0 +1,934 @@
+<?php
+
+require_once('user_functions.php');
+define('DEFAULT_REPETITION_FREQUENCY', 365);
+define('DEFAULT_EXPIRY_PERIOD', 365);
+
+/**
+ * Takes care of the output of data to end user
+ *
+ */
+class View {
+
+    /**
+     * Loads the javascript functions for form validation and warning message
+     */
+    public static function loadScripts() {
+        echo "<script>
+                        function validateEventForm()
+{
+form = document.forms['event'];
+
+if (form['event_action'].value == 'load_templates') {
+	return form['topicID'] != null;
+}
+
+
+result = notNull(form['title_long'].value) 
+        && notNull(form['title_short'].value) 
+        && notNull(form['mandantID'].value);
+
+       if (form['eventType'].value != 'elearning') {
+       	result = result && notNull(form['year'].value) && notNull(form['month'].value) && notNull(form['day'].value) && notNull(form['hour'].value);
+       };
+return result;
+}
+
+function notNull(attributeName) {
+    return (attributeName != null) && (attributeName != '') && (attributeName != 'none');
+}
+
+function validate() {
+    if (validateEventForm())
+        document.getElementById('eventButton').disabled = false;
+    else {
+        document.getElementById('eventButton').disabled = true;
+        }
+}
+
+function eventFormSubmit() {
+    form = document.forms['event'];
+    var deleteButton = document.getElementById('deleteEvent');
+    if (deleteButton == null || !deleteButton.checked) {
+        form.submit();
+    }
+    else {
+        var retVal = confirm('" . EVENT_DELETE_WARNING . "');
+           if( retVal == true ){
+                  form.submit();
+           }else{
+                  return false;
+           }
+    }
+}
+
+function mandantFormSubmit() {
+    form = document.forms['mandant'];
+    var deleteButton = document.getElementById('deleteMandant');
+    if (deleteButton == null || !deleteButton.checked) {
+        form.submit();
+    }
+    else {
+        var retVal = confirm('" . MANDANT_DELETE_WARNING . "');
+           if( retVal == true ){
+                  form.submit();
+           }else{
+                  return false;
+           }
+    }
+}
+
+function topicFormSubmit() {
+    form = document.forms['topic'];
+    var deleteButton = document.getElementById('deleteTopic');
+    if (deleteButton == null || !deleteButton.checked) {
+        form.submit();
+    }
+    else {
+        var retVal = confirm('" . TOPIC_DELETE_WARNING . "');
+           if( retVal == true ){
+                  form.submit();
+           }else{
+                  return false;
+           }
+    }
+}
+
+function locationFormSubmit() {
+    form = document.forms['location'];
+    var deleteButton = document.getElementById('deleteLocation');
+    if (deleteButton == null || !deleteButton.checked) {
+        form.submit();
+    }
+    else {
+        var retVal = confirm('" . LOCATION_DELETE_WARNING . "');
+           if( retVal == true ){
+                  form.submit();
+           }else{
+                  return false;
+           }
+    }
+}
+
+validate();
+</script>
+
+";
+    }
+
+    /**
+     * Returns the output code of the table with events that should be visible to user
+     * 
+     * @param String $eventInfoPage: an identifier for the page with event information
+     * @param String $eventActionsPage: a page that processes signing in/out of the event and other user actions
+     * @param int $userID
+     * @param Array $events
+     * @return string
+     */
+	 
+    public static function outputEventListForUser($eventInfoPage, $eventActionsPage, $userID, $events) {
+        $columns = array('title_long', 'date_time', 'duration_min', 'eventType', 'location');
+       
+	   echo $message = KURS_SEITE_1;
+	   
+	   $output = "
+<table id = 'events_list' >";
+        foreach (Event::$eventParamsNames as $key => $value) {
+            if (in_array($value, $columns))
+                $output .= "<th>$key</th>";
+        }
+        $output .= "<th>" . LOCATION . "</th>";
+        $output .= "<th>" . EVENT_LIST_ACTION . "</th></tr>";
+        foreach ($events as $eventRow) {
+            $output .= "<tr>";
+            $eventID = $eventRow['eventID'];
+            foreach ($eventRow as $key => $value) {
+                if (in_array($key, $columns)) {
+                    if ($key == 'title_long')
+                        $output .= "<td><a href = '?page_id=$eventInfoPage&eventID=$eventID'>$value</a></td> \n";
+                    else {
+                        if ($key == 'addressID')
+                            $value = $eventRow['address'];
+                        else if ($key == 'date_time')
+                            $value = Utils::getTime($value);
+                        else if ($key == 'eventType')
+                            $value = Event::$eventTypes[$value];
+                        $output .= "<td>$value</td> \n";
+                    }
+                }
+            }
+            $participantsStatus = getParticipantsStatus($userID, $eventID);
+            $action = View::eventActionOutput($eventActionsPage, $participantsStatus, $eventID);
+            $output .= "<td>$action</td></tr>";
+        }
+        $output .= "</table>";
+        return $output;
+    }
+
+    /**
+     * Outputs the list of all mandants in system
+     * 
+     * @param String $editMandantPage: page identifier, that takes care of editing mandant
+     * @param Array $mandants
+     */
+    public static function outputAllMandants($editMandantPage, $mandants) {
+        $output = "<div class='wrap'>
+<?php screen_icon(); ?>
+<h2>" . HEADER . "</h2>
+<table>
+<tr><td></td><th><a href = '?page=$editMandantPage&order=mandantID'>" . MANDANT_ID . "</a></th>";
+        $output .= "<th><a href = '?page=$editMandantPage&order=company'>" . MANDANT_COMPANY . "</a></th>";
+        $output .= "</tr>";
+        foreach ($mandants as $mandantID => $company) {
+            $output .= "<tr><td><a href = '?page=$editMandantPage&mandantID=$mandantID'>" . EDIT_MANDANT . "</a></td>";
+            $output .= "<td>$mandantID</td>";
+            $output .= "<td>$company</td>  </tr>"; 
+        }
+        $output .= "</table>";
+        echo $output;
+    }
+
+    /**
+     * Outputs the list of all locations in system
+     * 
+     * @param String $editLocationPage
+     * @param Array $locations
+     */
+    public static function outputAllLocations($editLocationPage, $locations) {
+        $output = "<div class='wrap'>
+<?php screen_icon(); ?>
+<h2>" . HEADER . "</h2>
+<table>
+<tr><td></td><th><a href = '?page=$editLocationPage&order=locationID'>" . LOCATION_ID . "</a></th>";
+        $output .= "<th><a href = '?page=$editLocationPage&order=name'>" . LOCATION_NAME . "</a></th>";
+        $output .= "</tr>";
+        foreach ($locations as $locationID => $name) {
+            $output .= "<tr><td><a href = '?page=$editLocationPage&locationID=$locationID'>" . EDIT_LOCATION . "</a></td>";
+            $output .= "<td>$locationID</td>";
+            $output .= "<td>$name</td></tr>";
+        }
+        $output .= "</table>";
+        echo $output;
+    }
+
+    /**
+     * Outputs all the topics in system
+     * 
+     * @param String $editTopicPage
+     * @param Array $topics
+     */
+    public static function outputAllTopics($editTopicPage, $topics) {
+        $output = "<div class='wrap'>
+<?php screen_icon(); ?>
+<h2>" . HEADER . "</h2>
+<table>
+<tr><td></td><th><a href = '?page=$editTopicPage&order=topicID'>TopicID</a></th>";
+        foreach (EventDatabaseManager::$topicParams as $key => $value) {
+            $output .= "<th><a href = '?page=$editTopicPage&order=$value'>$key</a></th>";
+        }
+        $output .= "</tr>";
+        foreach ($topics as $topic) {
+            $topicID = $topic['topicID'];
+            $output .= "<tr><td><a href = '?page=$editTopicPage&topicID=$topicID'>" . EDIT_TOPIC . "</a></td>";
+            foreach ($topic as $value) {
+                $output .= "<td>$value</td>";
+            }
+            $output .= "</tr>";
+        }
+        echo $output;
+    }
+
+    /**
+     * Returns the string, that is either the event status, or the link to available event action (such as signing in/out)
+     * 
+     * @param String $eventActionsPage
+     * @param String $participantsStatus
+     * @param int $eventID
+     * @return string
+     */
+    public static function eventActionOutput($eventActionsPage, $participantsStatus, $eventID) {
+        $action_allowed = true;
+        $class = "";
+        switch ($participantsStatus) {
+            case 0:
+                $action = ACTION_SIGN_IN;
+                $class = "class = 'sign_in_link'";
+                break;
+            case 1:
+                $action = ACTION_EVENT_FULL;
+                $action_allowed = false;
+                break;
+            case 2:
+                $action = ACTION_SIGN_OUT;
+                $class = "class = 'sign_out_link'";
+                break;
+            case 3:
+                $action = ACTION_NOT_ALLOWED_IN;
+                $action_allowed = false;
+                break;
+            case 4:
+                $action = ACTION_NOT_ALLOWED_IN;
+                $action_allowed = false;
+                break;
+            default;
+                $action_allowed = false;
+                $action = "";
+                break;
+        }
+        if ($action_allowed)
+            return "<a href = '?page_id=$eventActionsPage&eventaction=$participantsStatus&eventid=$eventID' $class>$action</a>";
+        else
+            return $action;
+    }
+
+    /** NOCH
+     * Outputs a button that links to previous page (specified)
+     * 
+     * @param String $backPage
+     */
+    public static function linkToBack($backPage) {
+        echo "<a href = '?page=$backPage'>" . BACK . "</a>";
+    }
+
+    /**
+     * Outputs a button that links to page for adding event
+     */
+    public static function linkToAddEvent() {
+        echo '<form action="" method = "get">
+            <input type = "hidden" name = "page" value = "add_event" />
+    <input type="submit" value="' . PLUGIN_ADD_EVENT . '">
+</form>';
+    }
+
+    /**
+     * Outputs a button that links to page for adding mandant
+     */
+    public static function linkToAddMandant() {
+        echo '<form action="" method = "get">
+            <input type = "hidden" name = "page" value = "add_mandant" />
+    <input type="submit" value="' . PLUGIN_ADD_MANDANT . '">
+</form>';
+    }
+
+    /**
+     * Outputs a button that links to page for adding location
+     */
+    public static function linkToAddLocation() {
+        echo '<form action="" method = "get">
+            <input type = "hidden" name = "page" value = "add_location" />
+    <input type="submit" value="' . PLUGIN_ADD_LOCATION . '">
+</form>';
+    }
+
+    /**
+     * Outputs a button that links to page for adding topic
+     */
+    public static function linkToAddTopic() {
+        echo '<form action="" method = "get">
+            <input type = "hidden" name = "page" value = "add_topic" />
+    <input type="submit" value="' . PLUGIN_ADD_TOPIC . '">
+</form>';
+    }
+
+    /**
+     * Returns the output code for the list of locations available to user
+     * 
+     * 
+     * @param Array $locations: all locations that can be assigned to user
+     * @param Array $userLocations: locations already assigned to user
+     * @param boolean $editingAllowed: whether the viewer is allowed to assign locations to this user
+     * @return string
+     */
+    public static function outputUserLocations($locations, $userLocations, $editingAllowed = true) {
+        $output = "<tr>
+            <th>" . USER_LOCATIONS . "</th>
+            <td>"
+                . View::multipleChoiceFormOutput('location', $locations, $userLocations, false, $editingAllowed) .
+                "</td>
+        </tr>";
+
+        return $output;
+    }
+
+    /**
+     * Returns the output string for the list of all locations available to mandant
+     * 
+     * @param Array $locations: all locations that can be assigned to mandant
+     * @param Array $mandantLocations: locations already assigned to mandants
+     * @return string
+     */
+    public static function outputMandantLocations($locations, $mandantLocations) {
+        $output = "<tr>
+            <th>" . MANDANT_LOCATIONS . "</th>
+            <td>"
+                . View::multipleChoiceFormOutput('location', $locations, $mandantLocations) .
+                "</td>
+        </tr>";
+        $output .= '</table>';
+        return $output;
+    }
+
+    /**
+     * Outputs the list of events on an admin page
+     * Also contains the form that allows filtering the events by topic or mandant
+     * The list entry contains the event info, link to editing event page, link to event participants page
+     * 
+     * 
+     * @param String $eventsListPageName
+     * @param String $editPageName
+     * @param String $participantsPageName
+     * @param Array $events
+     * @param Array $mandants
+     * @param Array $topics
+     * @param Array $attributes
+     */
+    public static function outputAllEvents($eventsListPageName, $editPageName, $participantsPageName, $events, $mandants, $topics, $attributes = array()) {
+        $page = $editPageName;
+        $mandantFilter = "";
+        $topicFilter = "";
+        if (isset($attributes['mandantID'])) {
+            $page .= "&mandant=" . $attributes['mandantID'];
+            $mandantFilter = $attributes['mandantID'];
+        }
+        if (isset($attributes['topicID'])) {
+            $page .= "&topic=" . $attributes['topicID'];
+            $topicFilter = $attributes['topicID'];
+        }
+        $output = "<div class='wrap'>
+<?php screen_icon(); ?>
+<h2>" . HEADER . "</h2>
+<form name = 'filters' method = 'get' action = ''>" . View::outputOptions('mandant', $mandants, $mandantFilter) . View::outputOptions('topic', $topics, $topicFilter);
+        $output .= "<input type = 'submit' value = '" . APPLY_FILTERS . "'>
+            <input type = 'hidden' name = 'page' value = '$eventsListPageName' /></form><table>
+<tr><td></td><td></td><th><a href = '?page=$page&order=eventID'>" . EVENT_ID . "</a></th>";
+        foreach (Event::$eventParamsNames as $key => $value) {
+            $output .= "<th><a href = '?page=$page&order=$value'>$key</a></th>";
+        }
+        $output .= "</tr>";
+        foreach ($events as $eventRow) {
+            $eventID = $eventRow['eventID'];
+            $output .= "<tr><td><a href = '?page=$editPageName&eventID=$eventID'>" . EDIT_EVENT . "</a></td>"
+                    . "<td><a href = '?page=$participantsPageName&eventID=$eventID'>" . "Participants" . "</a></td>";
+            foreach ($eventRow as $key => $value) {
+                if ($key == 'date_time')
+                    $value = Utils::getTime($value);
+                if ($key == "eventType") 
+                        $value = Event::$eventTypes[$value];
+                $output .= "<td>$value</td>";
+            }
+            $output .= "</tr>";
+        }
+        $output .= "</table>";
+        echo $output;
+    }
+
+    /**
+     * Outputs a form for creating or editing a topic
+     * 
+     * @param Array $params
+     */
+    public static function topicFormOutput($params = null) {
+        $output = "<div class='wrap'>
+<?php screen_icon(); ?>
+<h2>" . HEADER . "</h2>
+<form action = '' method = 'post' name = 'topic'>
+<table>";
+        if ($params != null) {
+            $output .= "<tr><td><b>" . DELETE_TOPIC . "?</b></td><td><input type='checkbox' id = 'deleteTopic' name='deleteEvent' value='yes'>";
+            foreach (EventDatabaseManager::$topicParams as $name => $param) {
+                $output .= "<tr><td><b>$name</b></td><td>" . View::textFormOutput($param, $params[$param]) . "</td></tr>";
+            }
+        } else {
+            foreach (EventDatabaseManager::$topicParams as $name => $param) {
+                $output .= "<tr><td><b>$name</b></td><td>" . View::textFormOutput($param) . "</td></tr>";
+            }
+        }
+        $output .= ' </table><input type="button" onclick = "topicFormSubmit()" value="' . BUTTON_SUBMIT . '">';
+        echo $output;
+    }
+
+    /**
+     * Outputs a form for creating or editing mandant
+     * 
+     * @param int $mandantID
+     * @param String $company
+     * @param Array $locations
+     * @param Array $mandantLocations
+     */
+    public static function mandantFormOutput($mandantID = null, $company = null, $locations = null, $mandantLocations = null) {
+        $output = "<div class='wrap'>
+<?php screen_icon(); ?>
+<h2>" . HEADER . "</h2>
+<form action = '' method = 'post' name = 'mandant'>
+<table>";
+
+        if ($mandantID != null) {
+            $output .= "<tr><td><b>" . DELETE_MANDANT . "?</b></td><td><input type='checkbox' id = 'deleteMandant' name='deleteMandant' value='yes'>";
+            $output .= "<tr><td><b>" . MANDANT_COMPANY . "</b></td><td>" . View::textFormOutput('company', $company) . "</td></tr>";
+        }
+        else
+            $output .= "<tr><td><b>" . MANDANT_COMPANY . "</b></td><td>" . View::textFormOutput('company') . "</td></tr>";
+        $output .= ' </table>';
+        $output .= View::outputMandantLocations($locations, $mandantLocations);
+        $output .= '<input type="button" onclick = "mandantFormSubmit()" value="' . BUTTON_SUBMIT . '">';
+        echo $output;
+    }
+
+    /**
+     * Outputs a form for creating or editing a location
+     * 
+     * @param int $locationID
+     * @param String $name
+     */
+    public static function locationFormOutput($locationID = null, $name = null) {
+        $output = "<div class='wrap'>
+<?php screen_icon(); ?>
+<form action = '' method = 'post' name = 'location'>
+<table>";
+
+        if ($locationID != null) {
+            $output .= "<tr><td><b>" . DELETE_LOCATION . "?</b></td><td><input type='checkbox' id = 'deleteLocation' name='deleteLocation' value='yes'>";
+            $output .= "<tr><td><b>" . LOCATION_NAME . "</b></td><td>" . View::textFormOutput('name', $name) . "</td></tr>";
+        }
+        else
+            $output .= "<tr><td><b>" . LOCATION_NAME . "</b></td><td>" . View::textFormOutput('name') . "</td></tr>";
+        $output .= ' </table>';
+        $output .= '<input type="button" onclick = "locationFormSubmit()" value="' . BUTTON_SUBMIT . '">';
+        echo $output;
+    }
+
+    /**
+     * Outputs form for creating or editing event
+     * 
+     * @param Event $event
+     * @param int $topicID
+     */
+    public static function eventFormOutput($event = null, $topicID = null) {
+        $output = "<div class='wrap'>
+<?php screen_icon(); ?>
+<h2>" . HEADER . "</h2>
+<form action = '' method = 'post' name = 'event'>
+<table>";
+        if ($event != null) {
+            $action_name = UPDATE_EVENT;
+            $output .= "<tr><td><b>" . DELETE_EVENT . "?</b></td><td><input type='checkbox' id = 'deleteEvent' name='deleteEvent' value='yes'>";
+            foreach (Event::$eventParamsNames as $name => $param) {
+                $output .= View::eventFormFieldTitle($name) . View::eventFormFieldsOutput($param, $event->getParam($param)) . "</td></tr>";
+            }
+        } else if ($topicID == null) {
+            $action_name = ADD_EVENT;
+            foreach (Event::$eventParamsNames as $name => $param) {
+                $output .= View::eventFormFieldTitle($name) . View::eventFormFieldsOutput($param) . "</td></tr>";
+            }
+        } else {
+            $action_name = ADD_EVENT;
+            $templateValues = EventDatabaseManager::getTopic($topicID);
+            foreach (Event::$eventParamsNames as $name => $param) {
+                if ($param == 'topicID') {
+                    $default = $topicID;
+                } else if (isset($templateValues['template_' . $param])) {
+                    $default = $templateValues['template_' . $param];
+                } else {
+                    $default = "";
+                }
+                $output .= View::eventFormFieldTitle($name) . View::eventFormFieldsOutput($param, $default) . "</td></tr>";
+            }
+        }
+        $output .= "<tr><td>" . EVENT_ACTION_PROMT . "?</td>
+            <td><input type='radio' name='event_action' value='load_templates'>" . LOAD_TEMPLATE_VALUES . "<br>
+<input type='radio' name='event_action' value='add_event' checked>$action_name</td>";
+        $output .= ' </table><input type="button" disabled id = "eventButton" onclick = "eventFormSubmit()" value="' . BUTTON_SUBMIT . '"></form>';
+        echo $output;
+    }
+
+    /**
+     * Returns an output string for the title for event form field
+     * 
+     * @param String $title
+     * @return String
+     */
+    public static function eventFormFieldTitle($title) {
+        if ($title == EVENT_TITLE_LONG || $title == EVENT_TITLE_SHORT || $title == EVENT_MANDANT || $title == EVENT_TOPIC)
+            return "<tr><td><b>$title*</b></td><td>";
+        else
+            return "<tr><td><b>$title</b></td><td>";
+    }
+
+    /**
+     * Returns the output string for user form field
+     * @param Array $param
+     * @param String $defaultValue
+     * @return String
+     */
+    public static function userFormFieldsOutput($param, $defaultValue = "", $editAllowed = true) {
+        if ($param == 'datr_mandantID') {
+            $mandants = EventDatabaseManager::getAllMandants();
+            return View::outputOptions('datr_mandantID', $mandants, $defaultValue, "", true, $editAllowed);
+        } else if ($param == 'datr_gender') {
+            return View::outputOptions('datr_gender', array("male" => GENDER_MALE, "female" => GENDER_FEMALE), $defaultValue, "", true, $editAllowed);
+        } else {
+            return View::textFormOutput($param, $defaultValue, "", $editAllowed);
+        }
+    }
+
+    /**
+     * Returns output string for the form with multiple choice (checkboxed)
+     * 
+     * @param String $name
+     * @param Array $allowedValues
+     * @param Array $selectedValues
+     * @param boolean $allowNew
+     * @param boolesn $allowedEdit
+     * @return string
+     */
+    public static function multipleChoiceFormOutput($name, $allowedValues, $selectedValues = array(), $allowNew = true, $allowedEdit = true) {
+        $output = '<table><tr><td>';
+        $disabled = ($allowedEdit ? "" : 'disabled');
+        foreach ($allowedValues as $key => $value) {
+            if (in_array($value, $selectedValues))
+                $output .= "<input type = 'checkbox' name='" . $name . "_$key' value = '1' checked $disabled> $value<br />";
+            else
+                $output .= "<input type = 'checkbox' name='" . $name . "_$key' value = '1' $disabled> $value<br />";
+        }
+        if ($allowNew)
+            $output .= "</td><td>" . NEW_VALUE . ": <input type = 'text' name = 'new_$name' />";
+        $output .= '</td></tr></table>';
+        return $output;
+    }
+
+    /**
+     * Returns the output string for event form field
+     * 
+     * @param String $param
+     * @param String $defaultValue
+     * @return String
+     */
+    public static function eventFormFieldsOutput($param, $defaultValue = "") {
+        if ($param == 'topicID') {
+            $topicsValues = EventDatabaseManager::getAllTopics();
+            return View::outputOptions('topicID', $topicsValues, $defaultValue, true, 'validate');
+        } else if ($param == 'mandantID') {
+            $mandants = EventDatabaseManager::getAllMandants();
+            return View::outputOptions('mandantID', $mandants, $defaultValue, true, 'validate');
+        } else if ($param == 'addressID') {
+            return "<b>" . CHOOSE_EXISTING_ADDRESS . ": </b>" . View::existingAddressesOutput($defaultValue, true) .
+                    "</br> <b>" . ENTER_NEW_ADDRESS . ": </b>" . View::newAddressFormOutput();
+        } else if ($param == 'date_time') {
+            if ($defaultValue != "") {
+                $date = date_parse($defaultValue);
+                return View::timeFormOutput("", $date['year'], $date['month'], $date['day'], $date['hour'], $date['minute']);
+            }
+            else
+                return View::timeFormOutput("");
+        } else if ($param == 'event_visible') {
+            if ($defaultValue != '1' && $defaultValue != 1)
+                $defaultValue = "";
+            return View::checkboxFormOutput('event_visible', '1', $defaultValue);
+        } else if ($param == 'eventType') {
+            if ($defaultValue == '')
+                $defaultValue = '12offline';
+            return View::outputOptions('eventType', Event::$eventTypes, $defaultValue, true, 'validate');
+        }
+        else if ($param == 'invitation_text') {
+            return View::textAreaFormOutput($param, $defaultValue, 'validate');
+        } else {
+            return View::textFormOutput($param, $defaultValue, 'validate');
+        }
+    }
+
+    /**
+     * Returns the output string for the HTML textarea element with corresponding parameters
+     * 
+     * @param String $param
+     * @param String $defaultValue
+     * @param String $function
+     * @return String
+     */
+    public static function textAreaFormOutput($param, $defaultValue, $function) {
+        if ($function == '')
+            return "<textarea name='$param'>$defaultValue</textarea>";
+        else
+            return "<textarea name='$param' onchange='$function()' onblur='$function()' onkeydown='$function()' onclick='$function()'>$defaultValue</textarea>";
+    }
+
+
+    /**
+     * Outputs the form for assigning topic to user
+     * 
+     * @param int $topicID
+     * @param string $topicTitle
+     * @param array $topicParams
+     * @param boolean $editAllowed
+     */
+    public static function userHasTopicForm($topicID, $topicTitle, $topicParams = null, $editAllowed = true) {
+
+        if ($topicParams == null)
+            $assigned = '0';
+        else
+            $assigned = '1';
+
+        $output = '<tr><td>' . View::checkboxFormOutput("user_has_topic_" . $topicID, '1', $assigned, $editAllowed) . "</td>
+        <td>$topicTitle</td>";
+
+        if ($assigned == '0') {
+            foreach (EventDatabaseManager::$userHasTopicsParams as $key) {
+                $output .= '<td>' . View::userHasTopicsFormFieldsOutput($key . '_' . $topicID, "", $editAllowed) . '</td>';
+            }
+        } else {
+            foreach (EventDatabaseManager::$userHasTopicsParams as $key) {
+                $output .= '<td>' . View::userHasTopicsFormFieldsOutput($key . '_' . $topicID, $topicParams[$key], $editAllowed) . '</td>';
+            }
+        }
+        $output .=
+                '</tr>';
+
+        echo $output;
+    }
+
+    /**
+     * Returns the output string for the HTML input text element with corresponding parameters
+     *
+     * @param String $param
+     * @param String $defaultValue
+     * @param String $function
+     * @return String
+     */
+    public static function textFormOutput($param, $defaultValue = "", $function = "", $editAllowed = true) {
+        $disabled = ($editAllowed ? "" : "disabled");
+        if ($function == '')
+            return "<input type='text' name='$param' value = '$defaultValue' $disabled>";
+        else
+            return "<input type='text' name='$param' value = '$defaultValue' $disabled onchange='$function()' onblur='$function()' onkeydown='$function()' onclick='$function()'>";
+    }
+
+    /**
+     * Returns the output string for the HTML checkbox element with corresponding parameters
+     * 
+     * @param String $paramName
+     * @param String $paramValue
+     * @param String $defaultValue
+     * @param String $editAllowed
+     * @return string
+     */
+    public static function checkboxFormOutput($paramName, $paramValue, $defaultValue = false, $editAllowed = true) {
+        $res = "<input type='checkbox' name='$paramName' value='$paramValue'";
+        if ($defaultValue)
+            $res .= " checked ";
+        if (!$editAllowed)
+            $res .= " disabled ";
+        
+        $res .= ">";
+        return $res;
+    }
+
+    /**
+     * Returns the output string for the form of topics assigned to user
+     * 
+     * @param string $param
+     * @param string $defaultValue
+     * @param bool $editAllowed
+     * @return string
+     */
+    public static function userHasTopicsFormFieldsOutput($param, $defaultValue = "", $editAllowed = true) {
+        if (substr($param, 0, strlen('repetition_frequency_days')) == 'repetition_frequency_days' && $defaultValue == '')
+            $defaultValue = DEFAULT_REPETITION_FREQUENCY;
+        else if (substr($param, 0, strlen('topic_expiry_date')) == 'topic_expiry_date' && $defaultValue == '') {
+            $defaultValue = date('Y-m-d', strtotime(date("Y-m-d", time()) . " + " . DEFAULT_EXPIRY_PERIOD . " day"));
+        }
+        return View::textFormOutput($param, $defaultValue, "", $editAllowed);
+    }
+
+    /**
+     * Returns the output string for the form field creating new address
+     * 
+     * @param string $param
+     * @param string $defaultValue
+     * @return string
+     */
+    public static function addressFormOutput($param, $defaultValue = "") {
+        if ($param == 'locationID') {
+            $values = EventDatabaseManager::getAllLocations();
+            return View::outputOptions('locationID', $values, $defaultValue)
+                    . " " . ENTER_NEW_LOCATION . ": "
+                    . "<input type='text' name='location'>";
+        } else {
+            return "<input type='text' name='$param'>";
+        }
+    }
+
+    /**
+     * Outputs the dropdown options list
+     * $optionsName - the name of the form element
+     * $optionValues - array (value => displayed name)
+     * $defaultValues - value that is selected by default
+     * $nullValueAllowed - if true, a null option is added
+     * $function - a name of the javascript function that should be called on option change
+     * 
+     * @param string $optionName
+     * @param array $optionValues
+     * @param string $defaultValue
+     * @param boolean $nullValueAllowed
+     * @param string $function
+     * @return string
+     */
+    public static function outputOptions($optionName, $optionValues, $defaultValue = "", $nullValueAllowed = true, $function = "", $editAllowed = true) {
+        $disabled = ($editAllowed? "":"disabled");
+        if ($function != '')
+            $output = "<select name='$optionName' onchange = '$function()' $disabled>";
+        else
+            $output = "<select name='$optionName' $disabled>";
+        if ($defaultValue == "") {
+            $output .= "<option value='' selected></option>";
+        } elseif ($nullValueAllowed) {
+            $output .= "<option value=''></option>";
+        }
+        foreach ($optionValues as $key => $value) {
+            if ($key == $defaultValue)
+                $output .= "<option value='$key' selected='selected'>$value</option>";
+            else
+                $output .= "<option value='$key'>$value</option>";
+        }
+        $output.= "</select>";
+        return $output;
+    }
+
+    /**
+     * Returns the output string for the form of selecting an existing address
+     * @param type $default
+     * @return type
+     */
+    public static function existingAddressesOutput($default = "") {
+        $values = EventDatabaseManager::getAllAddresses();
+        return View::outputOptions('addressID', $values, $default);
+    }
+
+    /**
+     * Returns the output string for the form of creating new address
+     * 
+     * @return string
+     */
+    public static function newAddressFormOutput() {
+        $addressParams = array(ADDRESS_OFFLINE => "address",
+            MEETING_ROOM => "meeting_room",
+            LOCATION => "locationID",
+            INSTRUCTION_LINK => "instructionLink",
+            CONTENT_LINK => "contentLink");
+
+        $output = "<table>";
+
+        foreach ($addressParams as $title => $param) {
+            $output .= "<tr><td>$title</td><td>" . View::addressFormOutput($param) . "</td></tr>";
+        }
+        return $output . "</table>";
+    }
+
+    /**
+     * Returns the output string for the form element of entering date and time for the event
+     * 
+     * @param string $prefix
+     * @param int $defaultYear
+     * @param int $defaultMonth
+     * @param int $defaultDay
+     * @param int $defaultHour
+     * @param int $defaultMinutes
+     * @return string
+     */
+    public static function timeFormOutput($prefix, $defaultYear = "", $defaultMonth = "", $defaultDay = "", $defaultHour = "", $defaultMinutes = "") {
+        $year = array();
+        for ($i = 0; $i < 5; $i++) {
+            $year[date('Y') + $i] = date('Y') + $i;
+        }
+        $month = array(1 => JANUARY, FEBRUARY, MARCH,
+            APRIL, MAY, JUNE, JULY, AUGUST,
+            SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER);
+        $day = array();
+        for ($i = 1; $i <= 31; $i++) {
+            $day[$i] = $i;
+        }
+        $hour = array();
+        for ($i = 0; $i <= 25; $i++) {
+            $hour[] = $i;
+        }
+        $min = array();
+        for ($i = 0; $i < 60; $i += 5) {
+            if ($i < 10)
+                $min[$i] = '0' . $i;
+            else
+                $min[$i] = $i;
+        }
+        return DATE . ": "
+                . View::outputOptions($prefix . 'day', $day, $defaultDay)
+                . View::outputOptions($prefix . 'month', $month, $defaultMonth)
+                . View::outputOptions($prefix . 'year', $year, $defaultYear)
+                . TIME . ": "
+                . View::outputOptions($prefix . 'hour', $hour, $defaultHour)
+                . View::outputOptions($prefix . 'min', $min, $defaultMinutes);
+    }
+
+    /**
+     * Outputs the list of event participants and their current statuses
+     * @param array $participants
+     * @param Event $event
+     */
+    public static function outputParticipantsList($participants, $event) {
+        $output = View::outputEventInfo($event, array(EVENT_TITLE_LONG => 'title_long',
+                    EVENT_TITLE_SHORT => 'title_short',
+                    EVENT_DATE_TIME => 'date_time'));
+        $output .= "<h3>" . PARTICIPANTS . "</h3><form action = '' method = 'post' name = 'participants'>"
+                . "<table>";
+        foreach ($participants as $participant) {
+            $user = get_userdata($participant['userID']);
+
+            $output .= '<tr><td>' . $user->data->display_name . '</td><td>' .
+                    View::outputOptions('status_user' . $user->ID, array(STATUS_COMPLETED => STATUS_COMPLETED_TITLE, STATUS_SIGN_IN => STATUS_SIGNED_IN_TITLE, STATUS_MISSED => STATUS_MISSED_TITLE, STATUS_SIGN_OUT => STATUS_SIGNED_OUT_TITLE), $participant['status'], false);
+            $output .= '</td></tr>';
+        }
+        $output .= "</table>";
+        if (!empty($participants))
+            $output .= "<input type = 'submit' value = '" . BUTTON_SUBMIT . "'>";
+        $output .= "</form>";
+        echo $output;
+    }
+
+    /**
+     * Outputs the event data for users
+     * Use $eventParams if you only want to output certain data, but not all available event parameters
+     * 
+     * @param Event $event
+     * @param array $eventParams
+     * @return string
+     */
+	/** $x = 'KURS_SEITE_1'; */
+    public static function outputEventInfo($event, $eventParams = "") {
+        if ($eventParams == "")
+            $eventParams = Event::$eventParamsNames;
+			
+			else if ($param == 'eventType')
+                $value = Event::$eventTypes[$event->getEventType ()];
+				
+			echo $message = KURS_SEITE_2;
+			
+       $output = "<div id='content' ><table id = 'event_info' >"; 
+		
+		
+        foreach ($eventParams as $title => $param) {
+            if ($param == 'topicID')
+                $value = $event->getTopic();
+            /** was hier? */ else if ($param == 'mandantID')
+                continue; 
+            else if ($param == 'addressID')
+                $value = $event->getAddress()->getAddressValue(true);
+            else {
+                $value = $event->getParam($param);
+            }
+            if ($param != 'event_visible')
+                $output .= "<tr><th>$title</th><td >" . $value . "</td></tr>";
+        }
+        $output .= '</table>';
+
+        return $output;
+    }
+
+}
+
+?>

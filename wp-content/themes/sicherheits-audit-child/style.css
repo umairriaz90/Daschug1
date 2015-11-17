@@ -1,0 +1,157 @@
+/*
+Theme Name: IT-Sicherheits-Audit Child
+Template: customizr-pro
+Author: JB
+Version: 1.0
+Updated: 2015-02-10 10:07:27
+*/
+
+@charset "UTF-8";
+
+
+/* Header Menue */
+
+.navbar .navbar-inner {box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);margin-top: 30px;}
+.navbar-inner {min-height: 30px;}
+.navbar-wrapper {
+    margin-bottom: 0;
+    margin-top: 7px;
+    max-width: 74.359% !important;
+    position: relative;
+    width: 55.539% !important;
+    z-index: 200;
+}
+
+/* Featuredbilder */
+.round-div:hover {width: 100% !important;}
+
+/* Responsive Header Logo */
+.sticky-enabled .tc-shrink-on .site-logo img {
+    height: 45px !important;
+    margin-left: -88px;
+    width: auto !important;
+}
+
+.sticky-enabled .brand {
+    float: left;
+    height: auto;
+    max-width: 400px;
+    padding-left: 10px;
+    position: relative;
+    text-align: left;
+    width: auto;
+    z-index: 2;
+}
+
+.sticky-enabled .navbar .navbar-inner {
+    margin-bottom: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 30px;
+    min-height: 35px;
+}
+
+.tc-header .brand {
+    float: left;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 0;
+    margin-right: 0;
+    margin-top: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    text-align: center;
+    width: auto !important;
+}
+
+/* SLider */
+.carousel-caption {background-color: rgba(0, 0, 0, 0);}
+#main-wrapper { margin-bottom: 20px;margin-top: 0;}
+
+/* Responsive SliderText */
+@media only screen and (max-width: 1024px)
+	{
+  .carousel-caption .lead, .carousel-caption h1 {line-height:1.1em;}
+  .lead { font-size: 13px; font-weight: 200;}	
+
+	}
+@media only screen and (max-width: 480px) 
+    {
+  .item .carousel-caption h1 { font-size: 12px;}
+.carousel-caption .btn, .carousel-caption .lead { font-size: 10px;}
+.carousel-caption {margin-left:10%;}
+.navbar .navbar-inner {height:auto;}
+  }
+@media screen and (device-width: 360px) and (device-height: 640px)
+	{}
+
+/* Footer */
+footer#footer {background-color: #fff;}
+
+/* Footermenue */
+.menu-footerwidgetmenue-container {font-size: 1.1em;}
+#menu-footerwidgetmenue {color:#000;margin-left:40px;}
+#menu-footerwidgetmenue.a:link {color:#000;}
+footer#footer a, footer#footer p {color:#000; font-size:1.1em;}
+#footer .white-icons .widget li:before {color:#c00000;}
+
+/* Social Feed */
+.colophon .social-block {text-align:left;}
+
+/* Beitragsnavi */
+
+h3.assistive-text {
+    background-color: #f1f1f1;
+    border-bottom-color: #c0c0c0;
+    border-bottom-style: dotted;
+    border-bottom-width: 1px;
+    border-top-color: #c0c0c0;
+    border-top-style: dotted;
+    border-top-width: 1px;
+    color: #262626;
+    font-size: 1.1em;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    margin-right: 0;
+    margin-top: 0;
+    opacity: 0.5;
+    text-align: center;
+}
+
+/* Beitragsbild */
+.thumb-wrapper { margin-top: 12px;}
+
+/* Links */
+a { color: #9f0000; text-shadow: 1px 1px 1px #c0c0c0;}
+
+/* Typo */
+h1 {font-size: 30px; line-height: 30px; color:#000;}
+h2 {font-size: 22px; line-height: 25px;}
+h3 {font-size: 18px; line-height: 22px;}
+
+/* Linienabstand Beitrag */
+.featurette-divider {clear: both; margin-bottom: 10px; margin-left: 0; margin-right: 0; margin-top: 5px;}
+
+/* WeiterlesenButton */
+.fpc-widget-front .fpc-btn-primary.red {background-color: #9d0404;background-image: linear-gradient(to bottom, #850000, #a80000);}
+
+/* Header */
+.tc-header {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #fff;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border-bottom-color: #c0c0c0;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    min-height: 45px;
+}
+
+/* Body Farbe */
+body {background-color:#fff;}
